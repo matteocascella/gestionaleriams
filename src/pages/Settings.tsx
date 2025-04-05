@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -7,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const Settings = () => {
   return (
@@ -54,7 +54,7 @@ const Settings = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="club-description">Descrizione</Label>
-                <Input id="club-description" defaultValue="Club dedicato agli appassionati di auto d'epoca italiane e internazionali." />
+                <Input id="club-description" defaultValue="Club dedicato agli appassionati di auto d'epoca italiano e internazionali." />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="club-foundation">Anno di Fondazione</Label>

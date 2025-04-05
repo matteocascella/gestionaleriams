@@ -4,6 +4,7 @@ import StatCards from '@/components/dashboard/StatCards';
 import RecentMembers from '@/components/dashboard/RecentMembers';
 import UpcomingEvents from '@/components/dashboard/UpcomingEvents';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card } from '@/components/ui/card';
 
 const Dashboard = () => {
   return (
