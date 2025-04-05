@@ -5,13 +5,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Search, PlusCircle, CreditCard, AlertCircle } from 'lucide-react';
+import { Search, PlusCircle, CreditCard, AlertCircle, FileText } from 'lucide-react';
 
 interface Member {
   id: string;
   name: string;
   email: string;
   phone: string;
+  taxCode: string;
   memberSince: string;
   membershipType: string;
   status: string;
@@ -27,12 +28,13 @@ const mockMembers: Member[] = [
     name: 'Marco Rossi',
     email: 'marco.rossi@example.com',
     phone: '+39 333 1234567',
+    taxCode: 'RSSMRC80A01H501T',
     memberSince: '12/04/2019',
     membershipType: 'Premium',
     status: 'Attivo',
     vehicles: 2,
     cardNumber: 'RIAMS-123456',
-    cardExpiry: '15/04/2025',
+    cardExpiry: '31/12/2024',
     isExpiring: false,
   },
   {
@@ -40,25 +42,27 @@ const mockMembers: Member[] = [
     name: 'Laura Bianchi',
     email: 'laura.bianchi@example.com',
     phone: '+39 333 7654321',
+    taxCode: 'BNCLRA85M41H501Y',
     memberSince: '03/06/2020',
     membershipType: 'Standard',
     status: 'Attivo',
     vehicles: 1,
     cardNumber: 'RIAMS-234567',
-    cardExpiry: '10/05/2024',
-    isExpiring: true,
+    cardExpiry: '31/12/2024',
+    isExpiring: false,
   },
   {
     id: '3',
     name: 'Giuseppe Verdi',
     email: 'giuseppe.verdi@example.com',
     phone: '+39 333 9876543',
+    taxCode: 'VRDGPP75E15H501Z',
     memberSince: '15/01/2018',
     membershipType: 'Premium',
     status: 'Scaduto',
     vehicles: 3,
     cardNumber: 'RIAMS-345678',
-    cardExpiry: '20/03/2024',
+    cardExpiry: '31/12/2023',
     isExpiring: false,
   },
   {
@@ -66,12 +70,13 @@ const mockMembers: Member[] = [
     name: 'Sofia Romano',
     email: 'sofia.romano@example.com',
     phone: '+39 333 5432167',
+    taxCode: 'RMNSFO90D45H501X',
     memberSince: '22/09/2021',
     membershipType: 'Standard',
     status: 'Attivo',
     vehicles: 1,
     cardNumber: 'RIAMS-456789',
-    cardExpiry: '05/11/2024',
+    cardExpiry: '31/12/2024',
     isExpiring: false,
   },
   {
@@ -79,12 +84,13 @@ const mockMembers: Member[] = [
     name: 'Antonio Esposito',
     email: 'antonio.esposito@example.com',
     phone: '+39 333 4569870',
+    taxCode: 'SPSNTN65H10H501W',
     memberSince: '07/11/2020',
     membershipType: 'Premium',
     status: 'Sospeso',
     vehicles: 2,
     cardNumber: 'RIAMS-567890',
-    cardExpiry: '15/12/2023',
+    cardExpiry: '31/12/2023',
     isExpiring: false,
   },
 ];
@@ -95,6 +101,7 @@ const MembersList = () => {
   const filteredMembers = mockMembers.filter(member => 
     member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     member.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    member.taxCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
     member.cardNumber.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -108,7 +115,7 @@ const MembersList = () => {
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Cerca socio o tessera..."
+                placeholder="Cerca socio, CF o tessera..."
                 className="w-full sm:w-[260px] pl-8"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -128,7 +135,7 @@ const MembersList = () => {
                 <TableHead>Nome</TableHead>
                 <TableHead className="hidden md:table-cell">Email</TableHead>
                 <TableHead className="hidden lg:table-cell">Telefono</TableHead>
-                <TableHead className="hidden md:table-cell">Iscrizione</TableHead>
+                <TableHead className="hidden md:table-cell">Codice Fiscale</TableHead>
                 <TableHead className="hidden lg:table-cell">Tipo</TableHead>
                 <TableHead>N. Tessera</TableHead>
                 <TableHead>Scadenza</TableHead>
@@ -142,7 +149,12 @@ const MembersList = () => {
                   <TableCell className="font-medium">{member.name}</TableCell>
                   <TableCell className="hidden md:table-cell">{member.email}</TableCell>
                   <TableCell className="hidden lg:table-cell">{member.phone}</TableCell>
-                  <TableCell className="hidden md:table-cell font-sm">{member.memberSince}</TableCell>
+                  <TableCell className="hidden md:table-cell font-mono text-xs">
+                    <div className="flex items-center">
+                      <FileText className="mr-2 h-3 w-3 text-muted-foreground" />
+                      {member.taxCode}
+                    </div>
+                  </TableCell>
                   <TableCell className="hidden lg:table-cell">
                     <Badge variant={member.membershipType === 'Premium' ? 'default' : 'secondary'} className={member.membershipType === 'Premium' ? 'bg-vintage-green' : 'bg-vintage-burgundy'}>
                       {member.membershipType}

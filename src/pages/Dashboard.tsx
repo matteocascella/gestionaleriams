@@ -4,7 +4,7 @@ import StatCards from '@/components/dashboard/StatCards';
 import RecentMembers from '@/components/dashboard/RecentMembers';
 import UpcomingEvents from '@/components/dashboard/UpcomingEvents';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Dashboard = () => {
   return (
@@ -31,19 +31,33 @@ const Dashboard = () => {
           </div>
         </TabsContent>
         <TabsContent value="analytics" className="space-y-4">
-          <Card className="p-6">
-            <h3 className="text-xl font-serif mb-4">Statistiche Avanzate</h3>
-            <p className="text-muted-foreground">
-              Le statistiche avanzate saranno disponibili in una versione futura.
-            </p>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-serif">Statistiche Avanzate</CardTitle>
+              <CardDescription>
+                Le statistiche avanzate saranno disponibili in una versione futura.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Questa sezione mostrerà grafici e analisi dettagliate sui soci e veicoli registrati.
+              </p>
+            </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="reports" className="space-y-4">
-          <Card className="p-6">
-            <h3 className="text-xl font-serif mb-4">Rapporti</h3>
-            <p className="text-muted-foreground">
-              I rapporti saranno disponibili in una versione futura.
-            </p>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-serif">Rapporti</CardTitle>
+              <CardDescription>
+                I rapporti saranno disponibili in una versione futura.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Questa sezione permetterà di generare rapporti dettagliati sull'attività del registro.
+              </p>
+            </CardContent>
           </Card>
         </TabsContent>
       </Tabs>

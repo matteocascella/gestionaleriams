@@ -2,7 +2,7 @@
 import React from 'react';
 import MembersList from '@/components/members/MembersList';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Members = () => {
   return (
@@ -26,35 +26,51 @@ const Members = () => {
           <MembersList />
         </TabsContent>
         <TabsContent value="active">
-          <Card className="p-6">
-            <h3 className="text-xl font-serif mb-4">Soci Attivi</h3>
-            <p className="text-muted-foreground">
-              Questa sezione mostrerà solo i soci con iscrizione attiva.
-            </p>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-serif">Soci Attivi</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Questa sezione mostrerà solo i soci con iscrizione attiva.
+              </p>
+            </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="expired">
-          <Card className="p-6">
-            <h3 className="text-xl font-serif mb-4">Soci Scaduti</h3>
-            <p className="text-muted-foreground">
-              Questa sezione mostrerà i soci con iscrizione scaduta.
-            </p>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-serif">Soci Scaduti</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Questa sezione mostrerà i soci con iscrizione scaduta.
+              </p>
+            </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="expiring">
-          <Card className="p-6">
-            <h3 className="text-xl font-serif mb-4">Soci in Scadenza</h3>
-            <p className="text-muted-foreground">
-              Questa sezione mostrerà i soci con tessera in scadenza nei prossimi 30 giorni.
-            </p>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-serif">Soci in Scadenza</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Questa sezione mostrerà i soci con tessera in scadenza al 31 dicembre dell'anno corrente.
+              </p>
+            </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="suspended">
-          <Card className="p-6">
-            <h3 className="text-xl font-serif mb-4">Soci Sospesi</h3>
-            <p className="text-muted-foreground">
-              Questa sezione mostrerà i soci la cui iscrizione è stata sospesa.
-            </p>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-serif">Soci Sospesi</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">
+                Questa sezione mostrerà i soci la cui iscrizione è stata sospesa.
+              </p>
+            </CardContent>
           </Card>
         </TabsContent>
       </Tabs>

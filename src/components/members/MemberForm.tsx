@@ -21,6 +21,7 @@ const MemberForm = ({ initialData, onSubmit }: MemberFormProps) => {
       surname: '',
       email: '',
       phone: '',
+      taxCode: '',  // Added codice fiscale
       address: '',
       city: '',
       postalCode: '',
@@ -30,6 +31,11 @@ const MemberForm = ({ initialData, onSubmit }: MemberFormProps) => {
       notes: '',
     }
   });
+
+  // Get current year for the expiry date
+  const currentYear = new Date().getFullYear();
+  // Generate December 31st of current year
+  const defaultExpiryDate = `${currentYear}-12-31`;
 
   return (
     <Card>
@@ -54,6 +60,12 @@ const MemberForm = ({ initialData, onSubmit }: MemberFormProps) => {
               <Input id="surname" {...register('surname', { required: true })} />
               {errors.surname && <p className="text-sm text-destructive">Campo richiesto</p>}
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="taxCode">Codice Fiscale</Label>
+            <Input id="taxCode" {...register('taxCode', { required: true })} />
+            {errors.taxCode && <p className="text-sm text-destructive">Campo richiesto</p>}
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -127,7 +139,10 @@ const MemberForm = ({ initialData, onSubmit }: MemberFormProps) => {
                 type="date" 
                 {...register('cardExpiryDate')} 
                 className="flex-1"
+                disabled
+                defaultValue={defaultExpiryDate}
               />
+              <p className="text-xs text-muted-foreground">La tessera scade sempre il 31 dicembre dell'anno corrente</p>
               {initialData?.cardExpiryDate && (
                 <div className="mt-2">
                   <Badge className={initialData?.isExpired ? 'bg-red-500' : 'bg-vintage-green'}>
