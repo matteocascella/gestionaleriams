@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Search, PlusCircle, CreditCard, AlertCircle, FileText } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Member {
   id: string;
@@ -97,6 +98,7 @@ const mockMembers: Member[] = [
 
 const MembersList = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
+  const navigate = useNavigate();
   
   const filteredMembers = mockMembers.filter(member => 
     member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -104,6 +106,14 @@ const MembersList = () => {
     member.taxCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
     member.cardNumber.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleAddMember = () => {
+    navigate('/soci/nuovo');
+  };
+
+  const handleViewMemberDetails = (memberId: string) => {
+    navigate(`/soci/${memberId}`);
+  };
 
   return (
     <Card className="shadow-sm">
@@ -121,7 +131,10 @@ const MembersList = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Button className="bg-vintage-green hover:bg-vintage-green/90">
+            <Button 
+              className="bg-vintage-green hover:bg-vintage-green/90"
+              onClick={handleAddMember}
+            >
               <PlusCircle className="mr-2 h-4 w-4" /> Nuovo Socio
             </Button>
           </div>
@@ -187,7 +200,12 @@ const MembersList = () => {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm" className="h-8 text-vintage-burgundy hover:text-vintage-burgundy/80">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-8 text-vintage-burgundy hover:text-vintage-burgundy/80"
+                      onClick={() => handleViewMemberDetails(member.id)}
+                    >
                       Dettagli
                     </Button>
                   </TableCell>

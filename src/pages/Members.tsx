@@ -3,8 +3,16 @@ import React from 'react';
 import MembersList from '@/components/members/MembersList';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLocation } from 'react-router-dom';
 
 const Members = () => {
+  const location = useLocation();
+  const isListView = !location.pathname.includes('/nuovo') && !location.pathname.includes('/soci/');
+  
+  if (!isListView) {
+    return null; // MemberForm will be rendered by the router
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col space-y-2">

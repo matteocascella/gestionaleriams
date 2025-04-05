@@ -26,8 +26,22 @@ const Dashboard = () => {
         </TabsList>
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <RecentMembers className="col-span-4" />
-            <UpcomingEvents className="col-span-3" />
+            <Card className="col-span-4">
+              <CardHeader>
+                <CardTitle className="text-xl font-serif">Soci Recenti</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <RecentMembers />
+              </CardContent>
+            </Card>
+            <Card className="col-span-3">
+              <CardHeader>
+                <CardTitle className="text-xl font-serif">Eventi Imminenti</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <UpcomingEvents />
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
         <TabsContent value="analytics" className="space-y-4">

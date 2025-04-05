@@ -11,6 +11,7 @@ import Vehicles from "@/pages/Vehicles";
 import Events from "@/pages/Events";
 import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
+import MemberForm from "@/components/members/MemberForm";
 
 // Create a client for React Query
 const queryClient = new QueryClient();
@@ -25,6 +26,8 @@ const App = () => (
           <Route element={<AppLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/soci" element={<Members />} />
+            <Route path="/soci/nuovo" element={<MemberForm onSubmit={() => {}} />} />
+            <Route path="/soci/:id" element={<MemberForm onSubmit={() => {}} initialData={{}} />} />
             <Route path="/veicoli" element={<Vehicles />} />
             <Route path="/eventi" element={<Events />} />
             <Route path="/impostazioni" element={<Settings />} />
