@@ -14,7 +14,7 @@ const Settings = () => {
       <div className="flex flex-col space-y-2">
         <h1 className="text-3xl font-serif font-bold tracking-tight">Impostazioni</h1>
         <p className="text-muted-foreground">
-          Gestisci le impostazioni del club e configura le preferenze dell'applicazione.
+          Gestisci le impostazioni del registro e configura le preferenze dell'applicazione.
         </p>
       </div>
 
@@ -22,21 +22,22 @@ const Settings = () => {
         <TabsList>
           <TabsTrigger value="general">Generale</TabsTrigger>
           <TabsTrigger value="membership">Iscrizioni</TabsTrigger>
+          <TabsTrigger value="cards">Tessere</TabsTrigger>
           <TabsTrigger value="notifications">Notifiche</TabsTrigger>
           <TabsTrigger value="system">Sistema</TabsTrigger>
         </TabsList>
         <TabsContent value="general">
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl font-serif">Informazioni Club</CardTitle>
+              <CardTitle className="text-xl font-serif">Informazioni Registro</CardTitle>
               <CardDescription>
-                Configura le informazioni generali del tuo club di auto d'epoca.
+                Configura le informazioni generali del registro italiano auto e moto storiche.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="club-name">Nome del Club</Label>
-                <Input id="club-name" defaultValue="Auto Club Classico" />
+                <Label htmlFor="club-name">Nome del Registro</Label>
+                <Input id="club-name" defaultValue="RIAMS - Registro Italiano Auto e Moto Storiche" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="club-address">Indirizzo Sede</Label>
@@ -45,7 +46,7 @@ const Settings = () => {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="contact-email">Email Contatto</Label>
-                  <Input id="contact-email" type="email" defaultValue="info@autoclubclassico.it" />
+                  <Input id="contact-email" type="email" defaultValue="info@riams.it" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="contact-phone">Telefono</Label>
@@ -54,7 +55,7 @@ const Settings = () => {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="club-description">Descrizione</Label>
-                <Input id="club-description" defaultValue="Club dedicato agli appassionati di auto d'epoca italiano e internazionali." />
+                <Input id="club-description" defaultValue="Registro ufficiale italiano dedicato agli appassionati di auto e moto d'epoca." />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="club-foundation">Anno di Fondazione</Label>
@@ -137,6 +138,97 @@ const Settings = () => {
                 <p className="text-sm text-muted-foreground">
                   Invia promemoria via email 30 giorni prima della scadenza
                 </p>
+              </div>
+              
+              <Button className="bg-vintage-green hover:bg-vintage-green/90">
+                Salva Modifiche
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="cards">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-serif">Gestione Tessere</CardTitle>
+              <CardDescription>
+                Configura le tessere associate e gestisci le scadenze.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Impostazioni Tessere</h3>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="card-prefix">Prefisso Numero Tessera</Label>
+                    <Input id="card-prefix" defaultValue="RIAMS-" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="card-digits">Cifre Numero Tessera</Label>
+                    <Select defaultValue="6">
+                      <SelectTrigger id="card-digits">
+                        <SelectValue placeholder="Seleziona numero cifre" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="4">4 cifre</SelectItem>
+                        <SelectItem value="5">5 cifre</SelectItem>
+                        <SelectItem value="6">6 cifre</SelectItem>
+                        <SelectItem value="7">7 cifre</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="card-expiry">Durata Validità Tessera</Label>
+                  <Select defaultValue="365">
+                    <SelectTrigger id="card-expiry">
+                      <SelectValue placeholder="Seleziona durata validità" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="182">6 mesi</SelectItem>
+                      <SelectItem value="365">1 anno</SelectItem>
+                      <SelectItem value="730">2 anni</SelectItem>
+                      <SelectItem value="1095">3 anni</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <Separator />
+                
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="expiry-notifications">Notifiche Scadenza</Label>
+                    <Switch id="expiry-notifications" defaultChecked />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Invia notifiche automatiche di scadenza tessera ai soci
+                  </p>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="notification-days">Giorni di Preavviso</Label>
+                  <Select defaultValue="30">
+                    <SelectTrigger id="notification-days">
+                      <SelectValue placeholder="Seleziona giorni di preavviso" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="15">15 giorni</SelectItem>
+                      <SelectItem value="30">30 giorni</SelectItem>
+                      <SelectItem value="45">45 giorni</SelectItem>
+                      <SelectItem value="60">60 giorni</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="card-qr">Codice QR su Tessera</Label>
+                    <Switch id="card-qr" defaultChecked />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Genera automaticamente un codice QR per ogni tessera
+                  </p>
+                </div>
               </div>
               
               <Button className="bg-vintage-green hover:bg-vintage-green/90">

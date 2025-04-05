@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useForm } from 'react-hook-form';
+import { Badge } from '@/components/ui/badge';
 
 interface MemberFormProps {
   initialData?: any;
@@ -24,6 +25,8 @@ const MemberForm = ({ initialData, onSubmit }: MemberFormProps) => {
       city: '',
       postalCode: '',
       membershipType: 'standard',
+      cardNumber: '',
+      cardExpiryDate: '',
       notes: '',
     }
   });
@@ -34,8 +37,8 @@ const MemberForm = ({ initialData, onSubmit }: MemberFormProps) => {
         <CardTitle className="text-2xl font-serif">{initialData ? 'Modifica Socio' : 'Nuovo Socio'}</CardTitle>
         <CardDescription>
           {initialData 
-            ? 'Aggiorna le informazioni del socio nel database del club.' 
-            : 'Inserisci le informazioni del nuovo socio per registrarlo nel club.'}
+            ? 'Aggiorna le informazioni del socio nel database del registro.' 
+            : 'Inserisci le informazioni del nuovo socio per registrarlo nel registro.'}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -99,12 +102,46 @@ const MemberForm = ({ initialData, onSubmit }: MemberFormProps) => {
             </Select>
           </div>
 
+          <Separator className="my-4" />
+          
+          <h3 className="text-lg font-medium">Informazioni Tessera</h3>
+          
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="cardNumber">Numero Tessera</Label>
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground">RIAMS-</span>
+                <Input 
+                  id="cardNumber" 
+                  {...register('cardNumber')} 
+                  placeholder="123456"
+                  className="flex-1"
+                />
+              </div>
+              {errors.cardNumber && <p className="text-sm text-destructive">Campo richiesto</p>}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cardExpiryDate">Scadenza Tessera</Label>
+              <Input 
+                id="cardExpiryDate" 
+                type="date" 
+                {...register('cardExpiryDate')} 
+                className="flex-1"
+              />
+              {initialData?.cardExpiryDate && (
+                <div className="mt-2">
+                  <Badge className={initialData?.isExpired ? 'bg-red-500' : 'bg-vintage-green'}>
+                    {initialData?.isExpired ? 'Scaduta' : 'Valida'}
+                  </Badge>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="notes">Note</Label>
             <Input id="notes" {...register('notes')} />
           </div>
-
-          <Separator className="my-4" />
 
           <div className="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
             <Button type="submit" className="bg-vintage-green hover:bg-vintage-green/90">

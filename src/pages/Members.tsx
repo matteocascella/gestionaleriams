@@ -10,7 +10,7 @@ const Members = () => {
       <div className="flex flex-col space-y-2">
         <h1 className="text-3xl font-serif font-bold tracking-tight">Gestione Soci</h1>
         <p className="text-muted-foreground">
-          Gestisci i soci del club, visualizza le loro informazioni e i veicoli associati.
+          Gestisci i soci del registro, visualizza le tessere e monitora le scadenze.
         </p>
       </div>
 
@@ -19,6 +19,7 @@ const Members = () => {
           <TabsTrigger value="all">Tutti i Soci</TabsTrigger>
           <TabsTrigger value="active">Attivi</TabsTrigger>
           <TabsTrigger value="expired">Scaduti</TabsTrigger>
+          <TabsTrigger value="expiring">In Scadenza</TabsTrigger>
           <TabsTrigger value="suspended">Sospesi</TabsTrigger>
         </TabsList>
         <TabsContent value="all">
@@ -37,6 +38,14 @@ const Members = () => {
             <h3 className="text-xl font-serif mb-4">Soci Scaduti</h3>
             <p className="text-muted-foreground">
               Questa sezione mostrerà i soci con iscrizione scaduta.
+            </p>
+          </Card>
+        </TabsContent>
+        <TabsContent value="expiring">
+          <Card className="p-6">
+            <h3 className="text-xl font-serif mb-4">Soci in Scadenza</h3>
+            <p className="text-muted-foreground">
+              Questa sezione mostrerà i soci con tessera in scadenza nei prossimi 30 giorni.
             </p>
           </Card>
         </TabsContent>

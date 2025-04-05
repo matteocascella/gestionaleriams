@@ -12,7 +12,7 @@ const Dashboard = () => {
       <div className="flex flex-col space-y-2">
         <h1 className="text-3xl font-serif font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground">
-          Benvenuto nel sistema di gestione del Club Auto Classiche.
+          Benvenuto nel sistema di gestione RIAMS - Registro Italiano Auto e Moto Storiche.
         </p>
       </div>
 
