@@ -9,6 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import MemberCardPrinting from '@/components/members/MemberCardPrinting';
 import CardManagement from '@/components/cards/CardManagement';
+import AffiliatedGarages from '@/components/conventions/AffiliatedGarages';
 
 const Settings = () => {
   return (
@@ -26,6 +27,7 @@ const Settings = () => {
           <TabsTrigger value="membership">Iscrizioni</TabsTrigger>
           <TabsTrigger value="cards">Tessere</TabsTrigger>
           <TabsTrigger value="printing">Stampa</TabsTrigger>
+          <TabsTrigger value="conventions">Convenzioni</TabsTrigger>
           <TabsTrigger value="notifications">Notifiche</TabsTrigger>
           <TabsTrigger value="system">Sistema</TabsTrigger>
         </TabsList>
@@ -154,6 +156,9 @@ const Settings = () => {
         </TabsContent>
         <TabsContent value="printing">
           <MemberCardPrinting />
+        </TabsContent>
+        <TabsContent value="conventions">
+          <AffiliatedGarages />
         </TabsContent>
         <TabsContent value="notifications">
           <Card>
