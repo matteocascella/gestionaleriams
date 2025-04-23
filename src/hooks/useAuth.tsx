@@ -60,17 +60,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkUserRole = async (userId: string) => {
     try {
-      // Ottieni i ruoli dell'utente (presuppone una tabella user_roles)
-      const { data, error } = await supabase
+      // Usa il mock client solo se necessario
+      const response = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userId)
         .single();
       
-      if (error) throw error;
+      if (response.error) throw response.error;
       
       // Imposta isAdmin a true se l'utente ha il ruolo admin
-      setIsAdmin(data?.role === 'admin');
+      setIsAdmin(response.data?.role === 'admin');
     } catch (error) {
       console.error('Errore nel controllo del ruolo:', error);
       setIsAdmin(false);

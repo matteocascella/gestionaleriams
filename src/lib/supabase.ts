@@ -14,18 +14,35 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
+// Mock per metodi che ritornano risultati PostgreSQL
+const createMockPostgrest = () => {
+  const mockReturn = { data: null, error: new Error('Supabase non configurato') };
+  
+  // Funzione ricorsiva che permette di concatenare metodi
+  const createChain = () => {
+    const chain = {
+      select: () => chain,
+      insert: () => chain,
+      update: () => chain,
+      delete: () => chain,
+      eq: () => chain,
+      order: () => chain,
+      single: () => mockReturn,
+      then: (callback: any) => Promise.resolve(mockReturn).then(callback),
+      catch: (callback: any) => Promise.resolve(mockReturn).catch(callback),
+    };
+    return chain;
+  };
+  
+  return createChain();
+};
+
 // Crea un client fittizio se le variabili non sono disponibili per evitare errori di runtime
 // Altrimenti crea un client reale
 export const supabase = supabaseUrl && supabaseAnonKey
   ? createClient(supabaseUrl, supabaseAnonKey)
   : {
-      from: () => ({
-        select: () => ({ data: null, error: new Error('Supabase non configurato') }),
-        insert: () => ({ data: null, error: new Error('Supabase non configurato') }),
-        update: () => ({ data: null, error: new Error('Supabase non configurato') }),
-        delete: () => ({ data: null, error: new Error('Supabase non configurato') }),
-        eq: () => ({ data: null, error: new Error('Supabase non configurato') }),
-      }),
+      from: () => createMockPostgrest(),
       auth: {
         signInWithPassword: () => Promise.resolve({ data: null, error: new Error('Supabase non configurato') }),
         signOut: () => Promise.resolve({ error: null }),
