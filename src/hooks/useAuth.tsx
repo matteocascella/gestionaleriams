@@ -68,23 +68,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const checkUserRole = async (userId: string) => {
-    try {
-      const response = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .single();
-      
-      if (response.error) throw response.error;
-      
-      setIsAdmin(response.data?.role === 'admin');
-    } catch (error) {
-      console.error('Errore nel controllo del ruolo:', error);
-      setIsAdmin(false);
-    }
-  };
-
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);

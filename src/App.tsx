@@ -57,6 +57,7 @@ const AppRoutes = () => {
         <Route path="/veicoli" element={<Vehicles />} />
         <Route path="/eventi" element={<Events />} />
         <Route path="/impostazioni" element={<Settings />} />
+        <Route path="/gestione-ruoli" element={<RoleManagement />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
