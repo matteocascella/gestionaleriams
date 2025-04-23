@@ -17,24 +17,42 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // Mock per metodi che ritornano risultati PostgreSQL
 const createMockPostgrest = () => {
   const mockReturn = { data: null, error: new Error('Supabase non configurato') };
-  
-  // Funzione ricorsiva che permette di concatenare metodi
-  const createChain = () => {
-    const chain = {
-      select: () => chain,
-      insert: () => chain,
-      update: () => chain,
-      delete: () => chain,
-      eq: () => chain,
-      order: () => chain,
-      single: () => mockReturn,
-      then: (callback: any) => Promise.resolve(mockReturn).then(callback),
-      catch: (callback: any) => Promise.resolve(mockReturn).catch(callback),
-    };
-    return chain;
+
+  // Ogni metodo simula le chain tipiche di Supabase ma restituisce SEMPRE una Promise
+  const postgrestMethods = {
+    select: () => Promise.resolve(mockReturn),
+    insert: () => Promise.resolve(mockReturn),
+    update: () => Promise.resolve(mockReturn),
+    delete: () => Promise.resolve(mockReturn),
+    eq: () => Promise.resolve(mockReturn),
+    order: () => Promise.resolve(mockReturn),
+    single: () => Promise.resolve(mockReturn),
   };
-  
-  return createChain();
+
+  // Per compatibilità con chaining, ogni metodo ritorna sempre l'interfaccia con tutti i metodi
+  const handler = {
+    get(_target: any, prop: string) {
+      if (postgrestMethods[prop]) {
+        return (...args: any[]) => {
+          // Permetti chain es. .select().eq().single() 
+          // Ogni chiamata restituisce sempre la stessa struttura Proxy con metodi
+          return new Proxy(postgrestMethods, handler);
+        };
+      }
+      // Per .then/.catch: se qualcuno fa await ..., ritorna effettivamente una Promise
+      if (prop === 'then') {
+        // L'ultimo metodo della catena restituirà la promise mock con errore
+        // Qui semplicemente risolviamo mockReturn per .then(dati => ...) 
+        return (resolve: any, reject: any) => Promise.resolve(mockReturn).then(resolve, reject);
+      }
+      if (prop === 'catch') {
+        return (reject: any) => Promise.resolve(mockReturn).catch(reject);
+      }
+      return undefined;
+    }
+  };
+  // Ritorno una Proxy che intercetta tutte le chiamate ai metodi più comuni di Postgrest
+  return new Proxy(postgrestMethods, handler);
 };
 
 // Crea un client fittizio se le variabili non sono disponibili per evitare errori di runtime
@@ -113,3 +131,4 @@ export type Session = {
     role?: string;
   } | null;
 };
+
