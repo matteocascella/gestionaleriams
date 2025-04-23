@@ -1,4 +1,3 @@
-
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
@@ -11,6 +10,7 @@ type AuthContextType = {
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   isAdmin: boolean;
+  roles: string[];
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,36 +19,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<any | null>(null);
   const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [roles, setRoles] = useState<string[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const fetchUserRoles = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId);
+
+      if (error) throw error;
+      setRoles(data?.map((r: any) => r.role) || []);
+    } catch (error: any) {
+      console.error('Errore nel fetch dei ruoli:', error);
+      setRoles([]);
+    }
+  };
+
   useEffect(() => {
-    // Controlla la sessione corrente
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
-      // Controlla se l'utente è admin
+
       if (session?.user) {
-        checkUserRole(session.user.id);
+        fetchUserRoles(session.user.id);
       }
-      
       setLoading(false);
     });
 
-    // Ascolta i cambiamenti di autenticazione
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
+
         if (session?.user) {
-          checkUserRole(session.user.id);
+          fetchUserRoles(session.user.id);
         } else {
-          setIsAdmin(false);
+          setRoles([]);
         }
-        
         setLoading(false);
       }
     );
@@ -60,7 +70,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkUserRole = async (userId: string) => {
     try {
-      // Usa il mock client solo se necessario
       const response = await supabase
         .from('user_roles')
         .select('role')
@@ -69,7 +78,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       if (response.error) throw response.error;
       
-      // Imposta isAdmin a true se l'utente ha il ruolo admin
       setIsAdmin(response.data?.role === 'admin');
     } catch (error) {
       console.error('Errore nel controllo del ruolo:', error);
@@ -129,7 +137,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loading,
     signIn,
     signOut,
-    isAdmin
+    isAdmin: roles.includes('admin'),
+    roles,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

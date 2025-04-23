@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,9 +12,9 @@ import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 import MemberForm from "@/components/members/MemberForm";
 import Login from "@/pages/Login";
+import Register from "@/pages/Register";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 
-// Create a client for React Query
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -25,7 +24,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Componente per proteggere le route
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   
@@ -46,6 +44,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route element={
         <ProtectedRoute>
           <AppLayout />
