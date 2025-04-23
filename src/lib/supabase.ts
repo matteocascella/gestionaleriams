@@ -1,15 +1,38 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Creiamo un client Supabase usando le variabili d'ambiente fornite da Lovable
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Ottieni le variabili d'ambiente fornite da Lovable
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
+// Controlla che le chiavi esistano e mostra un errore utile se mancano
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Supabase URL o chiave anonima mancanti');
+  console.error(
+    'Errore: Le variabili d\'ambiente Supabase non sono disponibili. ' +
+    'Assicurati di aver configurato correttamente il tuo progetto Supabase ' +
+    'e che le variabili VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY siano definite.'
+  );
 }
 
-export const supabase = createClient(supabaseUrl!, supabaseAnonKey!);
+// Crea un client fittizio se le variabili non sono disponibili per evitare errori di runtime
+// Altrimenti crea un client reale
+export const supabase = supabaseUrl && supabaseAnonKey
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : {
+      from: () => ({
+        select: () => ({ data: null, error: new Error('Supabase non configurato') }),
+        insert: () => ({ data: null, error: new Error('Supabase non configurato') }),
+        update: () => ({ data: null, error: new Error('Supabase non configurato') }),
+        delete: () => ({ data: null, error: new Error('Supabase non configurato') }),
+        eq: () => ({ data: null, error: new Error('Supabase non configurato') }),
+      }),
+      auth: {
+        signInWithPassword: () => Promise.resolve({ data: null, error: new Error('Supabase non configurato') }),
+        signOut: () => Promise.resolve({ error: null }),
+        getSession: () => Promise.resolve({ data: { session: null } }),
+        onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+      },
+    };
 
 // Definizioni dei tipi per le tabelle principali
 export type Socio = {
