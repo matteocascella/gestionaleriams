@@ -1,7 +1,20 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, Evento } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+
+export type Evento = {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  description: string;
+  participants: number;
+  carsExpected: number;
+  image?: string;
+  created_at?: string;
+};
 
 export const useEventi = () => {
   const queryClient = useQueryClient();

@@ -1,7 +1,17 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, Garage } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+
+export type Garage = {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+  discount: number;
+  services: string;
+  created_at?: string;
+};
 
 export const useGarageConvenzionati = () => {
   const queryClient = useQueryClient();

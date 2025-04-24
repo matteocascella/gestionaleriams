@@ -1,7 +1,26 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, Socio } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+
+export type Socio = {
+  id: string;
+  name: string;
+  surname: string;
+  email: string;
+  phone: string;
+  taxCode: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  membershipType: 'standard' | 'premium' | 'honorary' | string;
+  memberSince: string;
+  cardNumber: string;
+  cardExpiryDate: string;
+  status: 'Attivo' | 'Scaduto' | 'Sospeso' | string;
+  notes?: string;
+  created_at?: string;
+};
 
 export const useSoci = () => {
   const queryClient = useQueryClient();

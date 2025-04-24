@@ -1,7 +1,21 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, Veicolo } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+
+export type Veicolo = {
+  id: string;
+  brand: string;
+  model: string;
+  year: number;
+  licensePlate: string;
+  ownerId: string;
+  status: 'Certificato' | 'In Revisione' | string;
+  category: string;
+  created_at?: string;
+  owner?: string;
+  soci?: any;
+};
 
 export const useVeicoli = () => {
   const queryClient = useQueryClient();
