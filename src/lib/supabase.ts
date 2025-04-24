@@ -66,6 +66,8 @@ export const supabase = supabaseUrl && supabaseAnonKey
         signOut: () => Promise.resolve({ error: null }),
         getSession: () => Promise.resolve({ data: { session: null } }),
         onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+        resetPasswordForEmail: () => Promise.resolve({ data: null, error: new Error('Supabase non configurato') }),
+        updateUser: () => Promise.resolve({ data: null, error: new Error('Supabase non configurato') }),
       },
     };
 

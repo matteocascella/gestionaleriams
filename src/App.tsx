@@ -15,6 +15,8 @@ import MemberForm from "@/components/members/MemberForm";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import RoleManagement from "@/pages/RoleManagement";
+import ResetPassword from "@/pages/ResetPassword";
+import UpdatePassword from "@/pages/UpdatePassword";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 
 const queryClient = new QueryClient({
@@ -47,6 +49,8 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/update-password" element={<UpdatePassword />} />
       <Route element={
         <ProtectedRoute>
           <AppLayout />
