@@ -19,60 +19,83 @@ export const useGarageConvenzionati = () => {
 
   // Ottieni tutti i garage
   const getGarages = async (): Promise<Garage[]> => {
-    const { data, error } = await supabase
-      .from('garages')
-      .select('*')
-      .order('name', { ascending: true });
-    
-    if (error) throw new Error(error.message);
-    return data || [];
+    // Return mock data for development until the table is created
+    return [
+      {
+        id: '1',
+        name: 'Officina Classica',
+        address: 'Via Roma 123, Milano',
+        phone: '+39 02 1234567',
+        discount: 15,
+        services: 'Restauro completo, riparazioni meccaniche, verniciatura'
+      },
+      {
+        id: '2',
+        name: 'Auto d\'Epoca Service',
+        address: 'Corso Italia 45, Torino',
+        phone: '+39 011 9876543',
+        discount: 10,
+        services: 'Manutenzione, ricambi originali, certificazioni'
+      }
+    ];
   };
 
   // Ottieni un garage specifico per ID
   const getGarageById = async (id: string): Promise<Garage> => {
-    const { data, error } = await supabase
-      .from('garages')
-      .select('*')
-      .eq('id', id)
-      .single();
+    // Return mock data for the specified ID
+    const mockGarages = [
+      {
+        id: '1',
+        name: 'Officina Classica',
+        address: 'Via Roma 123, Milano',
+        phone: '+39 02 1234567',
+        discount: 15,
+        services: 'Restauro completo, riparazioni meccaniche, verniciatura'
+      },
+      {
+        id: '2',
+        name: 'Auto d\'Epoca Service',
+        address: 'Corso Italia 45, Torino',
+        phone: '+39 011 9876543',
+        discount: 10,
+        services: 'Manutenzione, ricambi originali, certificazioni'
+      }
+    ];
     
-    if (error) throw new Error(error.message);
-    return data;
+    const garage = mockGarages.find(g => g.id === id);
+    if (!garage) {
+      throw new Error('Garage non trovato');
+    }
+    
+    return garage;
   };
 
   // Aggiungi un nuovo garage
   const addGarage = async (garage: Omit<Garage, 'id' | 'created_at'>): Promise<Garage> => {
-    const { data, error } = await supabase
-      .from('garages')
-      .insert([{ ...garage }])
-      .select()
-      .single();
-    
-    if (error) throw new Error(error.message);
-    return data;
+    // In a real scenario, this would add to the database
+    // For now, just return a mock with an ID assigned
+    return {
+      ...garage,
+      id: Date.now().toString(),
+      created_at: new Date().toISOString(),
+    };
   };
 
   // Aggiorna un garage esistente
   const updateGarage = async ({ id, ...garage }: Garage): Promise<Garage> => {
-    const { data, error } = await supabase
-      .from('garages')
-      .update({ ...garage })
-      .eq('id', id)
-      .select()
-      .single();
-    
-    if (error) throw new Error(error.message);
-    return data;
+    // In a real scenario, this would update the database
+    // For now, just return the object as is
+    return {
+      id,
+      ...garage,
+    };
   };
 
   // Elimina un garage
   const deleteGarage = async (id: string): Promise<void> => {
-    const { error } = await supabase
-      .from('garages')
-      .delete()
-      .eq('id', id);
-    
-    if (error) throw new Error(error.message);
+    // In a real scenario, this would delete from the database
+    // For now, just return void
+    return;
   };
 
   // Query per ottenere tutti i garage

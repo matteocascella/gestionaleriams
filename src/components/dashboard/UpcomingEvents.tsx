@@ -5,8 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar, Loader2 } from 'lucide-react';
 import { useEventi } from '@/hooks/useEventi';
 import { Link } from 'react-router-dom';
-import { format, parse } from 'date-fns';
-import { it } from 'date-fns/locale';
+import { parse } from 'date-fns';
 
 const UpcomingEvents = () => {
   const { eventi, isLoadingEventi } = useEventi();
