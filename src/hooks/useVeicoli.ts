@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -10,7 +9,7 @@ export type Veicolo = {
   year: number;
   licensePlate: string;
   ownerId: string;
-  status: 'Certificato' | 'In Revisione' | string;
+  status: string;
   category: string;
   created_at?: string;
   owner?: string;
@@ -27,7 +26,7 @@ export const useVeicoli = () => {
       .from('veicoli')
       .select(`
         *,
-        soci:ownerId (
+        soci (
           name,
           surname
         )
@@ -49,7 +48,7 @@ export const useVeicoli = () => {
       .from('veicoli')
       .select(`
         *,
-        soci:ownerId (
+        soci (
           id,
           name,
           surname

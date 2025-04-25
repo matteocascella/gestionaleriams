@@ -9,6 +9,132 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      eventi: {
+        Row: {
+          carsexpected: number
+          created_at: string
+          date: string
+          description: string
+          id: string
+          image: string | null
+          location: string
+          participants: number
+          time: string
+          title: string
+        }
+        Insert: {
+          carsexpected?: number
+          created_at?: string
+          date: string
+          description: string
+          id?: string
+          image?: string | null
+          location: string
+          participants?: number
+          time: string
+          title: string
+        }
+        Update: {
+          carsexpected?: number
+          created_at?: string
+          date?: string
+          description?: string
+          id?: string
+          image?: string | null
+          location?: string
+          participants?: number
+          time?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      garage_convenzionati: {
+        Row: {
+          address: string
+          created_at: string
+          discount: number
+          id: string
+          name: string
+          phone: string
+          services: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          discount: number
+          id?: string
+          name: string
+          phone: string
+          services: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          discount?: number
+          id?: string
+          name?: string
+          phone?: string
+          services?: string
+        }
+        Relationships: []
+      }
+      soci: {
+        Row: {
+          address: string
+          cardexpirydate: string
+          cardnumber: string
+          city: string
+          created_at: string
+          email: string
+          id: string
+          membershiptype: string
+          membersince: string
+          name: string
+          notes: string | null
+          phone: string
+          postalcode: string
+          status: string
+          surname: string
+          taxcode: string
+        }
+        Insert: {
+          address: string
+          cardexpirydate: string
+          cardnumber: string
+          city: string
+          created_at?: string
+          email: string
+          id?: string
+          membershiptype: string
+          membersince: string
+          name: string
+          notes?: string | null
+          phone: string
+          postalcode: string
+          status: string
+          surname: string
+          taxcode: string
+        }
+        Update: {
+          address?: string
+          cardexpirydate?: string
+          cardnumber?: string
+          city?: string
+          created_at?: string
+          email?: string
+          id?: string
+          membershiptype?: string
+          membersince?: string
+          name?: string
+          notes?: string | null
+          phone?: string
+          postalcode?: string
+          status?: string
+          surname?: string
+          taxcode?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -26,6 +152,50 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      veicoli: {
+        Row: {
+          brand: string
+          category: string
+          created_at: string
+          id: string
+          licenseplate: string
+          model: string
+          ownerid: string
+          status: string
+          year: number
+        }
+        Insert: {
+          brand: string
+          category: string
+          created_at?: string
+          id?: string
+          licenseplate: string
+          model: string
+          ownerid: string
+          status: string
+          year: number
+        }
+        Update: {
+          brand?: string
+          category?: string
+          created_at?: string
+          id?: string
+          licenseplate?: string
+          model?: string
+          ownerid?: string
+          status?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "veicoli_ownerid_fkey"
+            columns: ["ownerid"]
+            isOneToOne: false
+            referencedRelation: "soci"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

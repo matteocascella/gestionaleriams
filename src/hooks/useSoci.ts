@@ -1,7 +1,7 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Database } from '@/integrations/supabase/types';
 
 export type Socio = {
   id: string;
@@ -13,11 +13,11 @@ export type Socio = {
   address: string;
   city: string;
   postalCode: string;
-  membershipType: 'standard' | 'premium' | 'honorary' | string;
+  membershipType: string;
   memberSince: string;
   cardNumber: string;
   cardExpiryDate: string;
-  status: 'Attivo' | 'Scaduto' | 'Sospeso' | string;
+  status: string;
   notes?: string;
   created_at?: string;
 };
@@ -53,7 +53,7 @@ export const useSoci = () => {
   const addSocio = async (socio: Omit<Socio, 'id' | 'created_at'>): Promise<Socio> => {
     const { data, error } = await supabase
       .from('soci')
-      .insert([{ ...socio }])
+      .insert([socio])
       .select()
       .single();
     
@@ -65,7 +65,7 @@ export const useSoci = () => {
   const updateSocio = async ({ id, ...socio }: Socio): Promise<Socio> => {
     const { data, error } = await supabase
       .from('soci')
-      .update({ ...socio })
+      .update(socio)
       .eq('id', id)
       .select()
       .single();

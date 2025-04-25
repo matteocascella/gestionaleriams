@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -19,83 +18,57 @@ export const useGarageConvenzionati = () => {
 
   // Ottieni tutti i garage
   const getGarages = async (): Promise<Garage[]> => {
-    // Return mock data for development until the table is created
-    return [
-      {
-        id: '1',
-        name: 'Officina Classica',
-        address: 'Via Roma 123, Milano',
-        phone: '+39 02 1234567',
-        discount: 15,
-        services: 'Restauro completo, riparazioni meccaniche, verniciatura'
-      },
-      {
-        id: '2',
-        name: 'Auto d\'Epoca Service',
-        address: 'Corso Italia 45, Torino',
-        phone: '+39 011 9876543',
-        discount: 10,
-        services: 'Manutenzione, ricambi originali, certificazioni'
-      }
-    ];
+    const { data, error } = await supabase
+      .from('garage_convenzionati')
+      .select('*')
+      .order('name', { ascending: true });
+    
+    if (error) throw new Error(error.message);
+    return data || [];
   };
 
   // Ottieni un garage specifico per ID
   const getGarageById = async (id: string): Promise<Garage> => {
-    // Return mock data for the specified ID
-    const mockGarages = [
-      {
-        id: '1',
-        name: 'Officina Classica',
-        address: 'Via Roma 123, Milano',
-        phone: '+39 02 1234567',
-        discount: 15,
-        services: 'Restauro completo, riparazioni meccaniche, verniciatura'
-      },
-      {
-        id: '2',
-        name: 'Auto d\'Epoca Service',
-        address: 'Corso Italia 45, Torino',
-        phone: '+39 011 9876543',
-        discount: 10,
-        services: 'Manutenzione, ricambi originali, certificazioni'
-      }
-    ];
+    const { data, error } = await supabase
+      .from('garage_convenzionati')
+      .select('*')
+      .eq('id', id);
     
-    const garage = mockGarages.find(g => g.id === id);
-    if (!garage) {
-      throw new Error('Garage non trovato');
-    }
-    
-    return garage;
+    if (error) throw new Error(error.message);
+    return data[0] || null;
   };
 
   // Aggiungi un nuovo garage
   const addGarage = async (garage: Omit<Garage, 'id' | 'created_at'>): Promise<Garage> => {
-    // In a real scenario, this would add to the database
-    // For now, just return a mock with an ID assigned
-    return {
-      ...garage,
-      id: Date.now().toString(),
-      created_at: new Date().toISOString(),
-    };
+    const { data, error } = await supabase
+      .from('garage_convenzionati')
+      .insert([{ ...garage, created_at: new Date().toISOString() }])
+      .select('*');
+    
+    if (error) throw new Error(error.message);
+    return data[0] || null;
   };
 
   // Aggiorna un garage esistente
   const updateGarage = async ({ id, ...garage }: Garage): Promise<Garage> => {
-    // In a real scenario, this would update the database
-    // For now, just return the object as is
-    return {
-      id,
-      ...garage,
-    };
+    const { data, error } = await supabase
+      .from('garage_convenzionati')
+      .update(garage)
+      .eq('id', id)
+      .select('*');
+    
+    if (error) throw new Error(error.message);
+    return data[0] || null;
   };
 
   // Elimina un garage
   const deleteGarage = async (id: string): Promise<void> => {
-    // In a real scenario, this would delete from the database
-    // For now, just return void
-    return;
+    const { error } = await supabase
+      .from('garage_convenzionati')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw new Error(error.message);
   };
 
   // Query per ottenere tutti i garage

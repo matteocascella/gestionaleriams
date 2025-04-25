@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -22,35 +21,17 @@ export const useEventi = () => {
 
   // Ottieni tutti gli eventi
   const getEventi = async (): Promise<Evento[]> => {
-    // Instead of trying to fetch from a non-existent table,
-    // return mock data for development until the table is created
-    return [
-      {
-        id: '1',
-        title: 'Raduno Estivo',
-        date: '15/07/2025',
-        time: '10:00 - 18:00',
-        location: 'Piazza Centrale, Roma',
-        description: 'Raduno annuale estivo con esposizione di auto d\'epoca.',
-        participants: 45,
-        carsExpected: 30,
-      },
-      {
-        id: '2',
-        title: 'Gita al Lago',
-        date: '20/08/2025',
-        time: '09:00 - 17:00',
-        location: 'Lago di Bracciano',
-        description: 'Gita panoramica con pranzo al lago.',
-        participants: 25,
-        carsExpected: 15,
-      }
-    ];
+    const { data, error } = await supabase
+      .from('eventi')
+      .select('*')
+      .order('date', { ascending: true });
+    
+    if (error) throw new Error(error.message);
+    return data || [];
   };
 
   // Ottieni un evento specifico per ID
   const getEventoById = async (id: string): Promise<Evento> => {
-    // Return mock data for the specified ID
     const mockEventi = [
       {
         id: '1',
@@ -84,8 +65,6 @@ export const useEventi = () => {
 
   // Aggiungi un nuovo evento
   const addEvento = async (evento: Omit<Evento, 'id' | 'created_at'>): Promise<Evento> => {
-    // In a real scenario, this would add to the database
-    // For now, just return a mock with an ID assigned
     return {
       ...evento,
       id: Date.now().toString(),
@@ -95,8 +74,6 @@ export const useEventi = () => {
 
   // Aggiorna un evento esistente
   const updateEvento = async ({ id, ...evento }: Evento): Promise<Evento> => {
-    // In a real scenario, this would update the database
-    // For now, just return the object as is
     return {
       id,
       ...evento,
@@ -105,8 +82,6 @@ export const useEventi = () => {
 
   // Elimina un evento
   const deleteEvento = async (id: string): Promise<void> => {
-    // In a real scenario, this would delete from the database
-    // For now, just return void
     return;
   };
 
