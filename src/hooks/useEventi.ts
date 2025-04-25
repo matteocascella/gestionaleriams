@@ -10,7 +10,7 @@ export type Evento = {
   location: string;
   description: string;
   participants: number;
-  carsExpected: number;
+  carsexpected: number;
   image?: string;
   created_at?: string;
 };
@@ -41,7 +41,7 @@ export const useEventi = () => {
         location: 'Piazza Centrale, Roma',
         description: 'Raduno annuale estivo con esposizione di auto d\'epoca.',
         participants: 45,
-        carsExpected: 30,
+        carsexpected: 30,
       },
       {
         id: '2',
@@ -51,7 +51,7 @@ export const useEventi = () => {
         location: 'Lago di Bracciano',
         description: 'Gita panoramica con pranzo al lago.',
         participants: 25,
-        carsExpected: 15,
+        carsexpected: 15,
       }
     ];
     
@@ -65,11 +65,14 @@ export const useEventi = () => {
 
   // Aggiungi un nuovo evento
   const addEvento = async (evento: Omit<Evento, 'id' | 'created_at'>): Promise<Evento> => {
-    return {
-      ...evento,
-      id: Date.now().toString(),
-      created_at: new Date().toISOString(),
-    };
+    const { data, error } = await supabase
+      .from('eventi')
+      .insert([evento])
+      .select()
+      .single();
+    
+    if (error) throw new Error(error.message);
+    return data;
   };
 
   // Aggiorna un evento esistente

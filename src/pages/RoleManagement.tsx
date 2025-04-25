@@ -1,16 +1,15 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { useAuth } from '@/hooks/useAuth';
+import { Database } from '@/integrations/supabase/types';
 
 type UserWithRole = {
   id: string;
   email: string;
-  role: string;
+  role: Database['public']['Enums']['app_role'];
 };
 
 const RoleManagement = () => {
@@ -70,11 +69,14 @@ const RoleManagement = () => {
     }
   };
 
-  const updateUserRole = async (userId: string, newRole: string) => {
+  const updateUserRole = async (userId: string, newRole: Database['public']['Enums']['app_role']) => {
     try {
       const { error } = await supabase
         .from('user_roles')
-        .upsert({ user_id: userId, role: newRole });
+        .upsert({ 
+          user_id: userId, 
+          role: newRole 
+        });
 
       if (error) throw error;
 

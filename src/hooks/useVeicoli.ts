@@ -7,8 +7,8 @@ export type Veicolo = {
   brand: string;
   model: string;
   year: number;
-  licensePlate: string;
-  ownerId: string;
+  licenseplate: string;
+  ownerid: string;
   status: string;
   category: string;
   created_at?: string;
@@ -20,7 +20,6 @@ export const useVeicoli = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  // Ottieni tutti i veicoli
   const getVeicoli = async (): Promise<Veicolo[]> => {
     const { data, error } = await supabase
       .from('veicoli')
@@ -34,15 +33,12 @@ export const useVeicoli = () => {
       .order('brand', { ascending: true });
     
     if (error) throw new Error(error.message);
-    
-    // Formatta i dati per compatibilità con l'interfaccia
     return data?.map(vehicle => ({
       ...vehicle,
       owner: vehicle.soci ? `${vehicle.soci.name} ${vehicle.soci.surname}` : 'N/A'
     })) || [];
   };
 
-  // Ottieni un veicolo specifico per ID
   const getVeicoloById = async (id: string): Promise<Veicolo> => {
     const { data, error } = await supabase
       .from('veicoli')
@@ -65,11 +61,10 @@ export const useVeicoli = () => {
     };
   };
 
-  // Aggiungi un nuovo veicolo
-  const addVeicolo = async (veicolo: Omit<Veicolo, 'id' | 'created_at'>): Promise<Veicolo> => {
+  const addVeicolo = async (veicolo: Omit<Veicolo, 'id' | 'created_at' | 'owner' | 'soci'>): Promise<Veicolo> => {
     const { data, error } = await supabase
       .from('veicoli')
-      .insert([{ ...veicolo }])
+      .insert([veicolo])
       .select()
       .single();
     
@@ -77,7 +72,6 @@ export const useVeicoli = () => {
     return data;
   };
 
-  // Aggiorna un veicolo esistente
   const updateVeicolo = async ({ id, ...veicolo }: Veicolo): Promise<Veicolo> => {
     const { data, error } = await supabase
       .from('veicoli')
@@ -90,7 +84,6 @@ export const useVeicoli = () => {
     return data;
   };
 
-  // Elimina un veicolo
   const deleteVeicolo = async (id: string): Promise<void> => {
     const { error } = await supabase
       .from('veicoli')
@@ -100,13 +93,11 @@ export const useVeicoli = () => {
     if (error) throw new Error(error.message);
   };
 
-  // Query per ottenere tutti i veicoli
   const { data: veicoli, isLoading: isLoadingVeicoli, error: veicoliError } = useQuery({
     queryKey: ['veicoli'],
     queryFn: getVeicoli,
   });
 
-  // Mutation per aggiungere un veicolo
   const addVeicoloMutation = useMutation({
     mutationFn: addVeicolo,
     onSuccess: () => {
@@ -125,7 +116,6 @@ export const useVeicoli = () => {
     },
   });
 
-  // Mutation per aggiornare un veicolo
   const updateVeicoloMutation = useMutation({
     mutationFn: updateVeicolo,
     onSuccess: () => {
@@ -144,7 +134,6 @@ export const useVeicoli = () => {
     },
   });
 
-  // Mutation per eliminare un veicolo
   const deleteVeicoloMutation = useMutation({
     mutationFn: deleteVeicolo,
     onSuccess: () => {
@@ -163,7 +152,6 @@ export const useVeicoli = () => {
     },
   });
 
-  // Query per ottenere un veicolo specifico
   const getVeicoloByIdQuery = (id: string) => useQuery({
     queryKey: ['veicoli', id],
     queryFn: () => getVeicoloById(id),
